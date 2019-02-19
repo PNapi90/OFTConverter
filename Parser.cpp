@@ -11,7 +11,7 @@ Parser::Parser(std::vector<int> &FileRange,
     Folder = "Gamma_Single_Cs/OFT/";
     Photon = std::vector<std::vector<double>>(100,std::vector<double>(4,0));
 
-    std::string OutputName = "Stored/Gamma_"+std::to_string(Files_from);
+    std::string OutputName = "Stored/OFT/Gamma_"+std::to_string(Files_from);
     OutputName += "_" + std::to_string(Files_to) + ".rawSpec";
 
     OUT.open(OutputName);
