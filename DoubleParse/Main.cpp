@@ -19,7 +19,7 @@ int main(int argc , char** argv)
     int NFiles = 1;
     int offset = 0;
 
-    for(int i = 0;i < 2;++i)
+    for(int i = 0;i < argc;++i)
     {
         s = std::string(argv[i]);
         if(s == "-F")
