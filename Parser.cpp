@@ -3,16 +3,24 @@
 //--------------------------------------------
 
 Parser::Parser(std::vector<int> &FileRange,
-               int _threadNumber)
+               int _threadNumber,
+               bool _type)
     : Files_from(FileRange[0]),
       Files_to(FileRange[1]),
-      threadNumber(_threadNumber)
+      threadNumber(_threadNumber),
+      type(_type),
+      Egamma(0)
 {
-    Folder = "Gamma_Single_Cs/OFT/";
+    if(!type)
+        Folder = "Gamma_Single_Cs/OFT/";
+    else
+        Folder = "Gamma_Double_Cs/OFT/";
+
     Photon = std::vector<std::vector<double>>(100,std::vector<double>(4,0));
 
-    std::string OutputName = "Stored/OFT/Gamma_"+std::to_string(Files_from);
-    OutputName += "_" + std::to_string(Files_to) + ".rawSpec";
+    std::string OutputName = "Stored/OFT/Gamma_";
+    OutputName += type ? "Double" : "";
+    OutputName += std::to_string(Files_from) + "_" + std::to_string(Files_to) + ".rawSpec";
 
     OUT.open(OutputName);
 
@@ -37,13 +45,15 @@ void Parser::Process()
     double E = 0 , x[3] = {0};
     int ID = 0,dummy = 0;
     
-    int PhotonID = 0;
+    int PhotonID = 0,PhotonIter = 0;
 
     PhotonLength = 0;
 
     for(int i = Files_from;i < Files_to;++i)
     {
-        name = Folder + "GammaOFT." + GetEnding(i);
+        name = Folder + "GammaOFT";
+        name += type ? "_Double" : ""; 
+        name += "." + GetEnding(i);
 
         DATA.open(name);
 
@@ -52,7 +62,7 @@ void Parser::Process()
 
         PhotonID = 0;
         PhotonLength = 0;
-
+        PhotonIter = 0;
 
         while(std::getline(DATA,line))
         {
@@ -60,12 +70,32 @@ void Parser::Process()
 
             if(ID == -1)
             {
-                if(PhotonLength > 0)
-                    Write(PhotonID);
+                
+
+                if(type)
+                {
+                    if (PhotonLength > 0 && PhotonIter == 2)
+                        Write(PhotonID);
+                    
+                    if(PhotonIter == 2)
+                    {
+                        PhotonIter = 0;
+                        PhotonLength = 0;
+                    }
+                    Egamma = 661.7;
+                    ++PhotonIter;
+                }
+                else
+                {
+                    if (PhotonLength > 0)
+                        Write(PhotonID);
+                    Egamma = 661.7;
+                    ++PhotonID;
+                    PhotonLength = 0;
+                }
+                
 
                 
-                ++PhotonID;
-                PhotonLength = 0;
             }
             else
             {
@@ -102,7 +132,7 @@ void Parser::Write(int PhotonID)
     {
         for(auto Values : Photon[i])
             OUT << Values << " ";
-        OUT << 661.7 << " " << PhotonLength << " " << PhotonID << std::endl;
+        OUT << Egamma << " " << PhotonLength << " " << PhotonID << std::endl;
     }
 
     for(int i = 0;i < 7;++i)

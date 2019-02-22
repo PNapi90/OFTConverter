@@ -11,6 +11,7 @@ struct FlagsAndValues
 {
     int nthr = 1;
     int nFiles = 1;
+    bool type = false;
 };
 
 //--------------------------------------------
@@ -54,7 +55,7 @@ int main(int argc,
         FileRange[0] = FileRange[1];
         FileRange[1] = FileRange[0] + FilesPerThread;
 
-        Parsers.push_back(std::make_shared<Parser>(FileRange,i));
+        Parsers.push_back(std::make_shared<Parser>(FileRange,i,F.type));
     }
 
     std::thread t[nthr];
@@ -103,6 +104,11 @@ void GetFlags(int argc,
         {
             F.nFiles = std::stoi(s);
             FileFlag = false;
+            continue;
+        }
+        if (s == "-d")
+        {
+            F.type = true;
             continue;
         }
     }

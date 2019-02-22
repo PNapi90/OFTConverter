@@ -14,6 +14,9 @@ private:
     const char* format = "%d %lf %lf %lf %lf %d";
 
     int Files_from,Files_to,threadNumber;
+    bool type;
+
+    double Egamma;
 
     int PhotonLength;
 
@@ -33,7 +36,8 @@ private:
 
 public:
     Parser(std::vector<int> &FileRange,
-           int _threadNumber);
+           int _threadNumber,
+           bool _type);
     ~Parser();
 
     std::thread threading();

@@ -1,5 +1,5 @@
 CC      = g++
-CFLAGS  = -g -pthread -O3 -std=c++11 -Wall
+CFLAGS  = -g -pthread -g -O3 -std=c++11 -Wall
 
 
 OBJECTS = Parser.o
@@ -10,7 +10,7 @@ all: Program
 	$(CC) -c $< $(CFLAGS)
 	
 Program: $(OBJECTS) Main.o
-	$(CC) $(OBJECTS) Main.o -pthread -o OFTConversion
+	$(CC) $(OBJECTS) Main.o -g -pthread -o OFTConversion
 
 clean: 
 	rm -f *.o $(PROGRAM)
