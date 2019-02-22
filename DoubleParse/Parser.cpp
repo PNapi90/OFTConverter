@@ -4,13 +4,15 @@
 
 Parser::Parser(std::vector<int> &Ranges,
                int _thrN,
-               bool _type)
-    : FilesStart(Ranges[0]),
-      FilesEnd(Ranges[1]),
+               bool _type,
+               int _offset)
+    : FilesStart(Ranges[0]+_offset),
+      FilesEnd(Ranges[1]+_offset),
       thrN(_thrN),
       Parsed(0),
       type(_type),
-      hit(0)
+      hit(0),
+      offset(_offset)
 {
     Folder = "Gamma_Double_Cs/";
     Folder += !type ? "OFT/" : "";

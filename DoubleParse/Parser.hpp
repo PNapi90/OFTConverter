@@ -43,6 +43,7 @@ private:
     bool type;
 
     int FilesStart,FilesEnd,thrN,Parsed,hit;
+    int offset;
     std::string Folder;
 
     std::ofstream OUT;
@@ -58,7 +59,8 @@ private:
 public:
     Parser(std::vector<int> &Ranges,
            int _thrN,
-           bool _type);
+           bool _type,
+           int _offset);
     ~Parser();
 
     std::thread threading();
