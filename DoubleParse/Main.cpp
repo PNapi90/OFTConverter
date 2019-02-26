@@ -84,9 +84,9 @@ int main(int argc , char** argv)
 
     std::cout << "--------------------\n"; 
 
-    for(int i = 0;i < nthr;++i)
+    for(auto P : PARSERS)
     {
-        PARSERS[i]->PrintParsed();
+        P->PrintParsed();
         PARSERS.pop_back();
     }
 
